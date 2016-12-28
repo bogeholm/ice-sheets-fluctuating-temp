@@ -35,6 +35,9 @@ save_png = true;
 %save_png = false;
 % -------------------------------------------------------------------------
 
+
+
+
 % ------------- Variance of AR(1) process ---------------------------------
 %https://en.wikipedia.org/wiki/Autoregressive_model#...
 % Example:_An_AR.281.29_process
@@ -52,12 +55,12 @@ mm_SLE_pr_Gt = 2.6958e-3;
 try
     ar1results = load([datapath, 'ar1results.mat']);
 catch FE
-    % Inform user of problem ...
-    disp('No file ar1results.mat - run greenlandTemperature2016.m')
-    % ... and exit. Can't proceed without these results
+    display('No file ar1results.mat - run greenlandTemperature2016.m')
+    % Can't proceed without these results
     rethrow(FE)
 end
-
+%display(ar1results.estar1)
+%display(ar1results.estvar)
 estar1 = ar1results.estar1;
 estvar = ar1results.estvar;
 arvar = arvar_func(estar1, sqrt(estvar));
@@ -65,8 +68,8 @@ sigmaval = sqrt(arvar);
 % -------------------------------------------------------------------------
 
 
-
-% ------------- Load parameters -------------------------------------------
+% -------------------------------------------------------------------------
+% Load the parameters for this run
 run('oerlemansParam')
 % -------------------------------------------------------------------------
 
@@ -74,7 +77,6 @@ run('oerlemansParam')
 
 %% Load Robinsons data
 datafile = [robinsonpath, 'Robinson2012_transient[December2015].nc'];
-
 ncid = netcdf.open(datafile, 'NOWRITE');
 [ndims, nvars, natts, unlimdimID] = netcdf.inq(ncid);
 
@@ -85,6 +87,8 @@ for ii = 0:nvars-1
     %display(natts)
 end
 
+%netcdf.close(ncid)
+%netcdf.inqAttName(ncid, 2,0)
 smbid           = netcdf.inqVarID(ncid, 'smb');
 smbunits        = netcdf.getAtt(ncid, smbid, 'units'); 
 
@@ -168,7 +172,6 @@ ylim([1.0 4.0]);
 line(0.2*[1, 1], ylim, 'Color', 'k')
 
 %% Plot all V(t) - separate the parameters
-close all;
 fig117 = figure(117); hold on; box on; figset(fig117)
 
 % disp(nitm); % 11
@@ -317,6 +320,7 @@ end
 xlim([0 0.5]);
 %ylim([3.65 3.8]);
 
+%}
 
 %% Fit 3rd degree polynomial model to all SMBs
 fprintf('Fitting polynomials...\n');
@@ -363,7 +367,7 @@ dvec = reshape(Dmat, 1, nitm*nppf);
 
 
 
-
+%{
 %% Check to see we did it right
 Ntry = 2;
 ivec = datasample(1:nitm, Ntry, 'Replace', false);
@@ -403,9 +407,11 @@ textset(xl); textset(yl);
 %close(678) % Only a check!
 
 
+%}
 
 %% Showcase the minimization objective
 %  Choose an arbitrary parameter set from avec, bvec, ...
+rng('default');
 idx = datasample(1:nitm*nppf, 1, 'Replace', false);
 %idx = 19;
 % Choose a temperature - this one sits nicely in the middle of the figure
@@ -420,7 +426,7 @@ smb =  @(T) avec(idx)*T.^3 + bvec(idx)*T.^2 + ...
 % The second derivative wrt temperature "f_TT of T"
 smbacc =  @(T) 6*avec(idx)*T + 2*bvec(idx);
 % Add the two functions, "function (two) of T "
-smbtot = @(T) smb(T) + smbacc(T);
+smbtot = @(T) smb(T) + 0.5*sqrt(arvar)*smbacc(T);
 
 % Plot limits should be adjusted accordingly (only visual effetct).
 manual_limits = false;
@@ -429,7 +435,7 @@ if manual_limits
     ylimits = [-2.5 -0.2];
 else
     xlimits = [3 5];
-    ylimits = [smb(tplot)-1.35, smb(tplot)+0.9];
+    ylimits = [smb(tplot)-0.75, smb(tplot)+0.75];
 end
 
 
@@ -440,6 +446,7 @@ pf2 = plot(T, smbtot(T), 'Color', blue, 'linewidth', 1.8, ...
     'Linestyle', ':');
 xlim(xlimits);
 ylim(ylimits);
+
 
 
 % -------------------------------------------------------------------------
@@ -526,10 +533,10 @@ htex2 = annotation('textarrow', nxa2, nya2, 'String', sa2); textset(htex2)
 
 % Legend strings
 legstrs = {'$\tilde{f}(T)$ := SMB$(T)$', ...
-    '$\tilde{f}(T) + \tilde{f}_{TT}(T)$', ...
+    '$\tilde{f}(T) + $Var$(T)/2 \times \tilde{f}_{TT}(T)$', ...
     '$\tilde{f}(T_0)$', ...
-    '$\tilde{f}(T_0) + \tilde{f}_{TT}(T_0)$', ...
-    '$\tilde{f}(\hat{T}) + \tilde{f}_{TT}(\hat{T})$'};
+    '$\tilde{f}(T_0) + $Var$(T)/2 \times \tilde{f}_{TT}(T_0)$', ...
+    '$\tilde{f}(\hat{T}) + $Var$(T)/2 \times \tilde{f}_{TT}(\hat{T})$'};
 % Legend
 l1 = legend([pf0 pf2 scf0 scf2 scfn], legstrs, ...
     'location', 'southwest'); legset(l1)
@@ -560,7 +567,7 @@ smb =  @(T) avec(idx)*T.^3 + bvec(idx)*T.^2 + ...
 % The second derivative wrt temperature "f_TT of T"
 smbacc =  @(T) 6*avec(idx)*T + 2*bvec(idx);
 % Add the two functions, "function (two) of T "
-smbtot = @(T) smb(T) + smbacc(T);
+smbtot = @(T) smb(T) + 0.5*sqrt(arvar)*smbacc(T);
 
 % Now compute the smb and smb acceleration
 smbv = smb(T);
@@ -639,7 +646,7 @@ for idp = 1:nitm*nppf
     % The second derivative wrt temperature "f_TT of T"
     smbacc =  @(T) 6*avec(idp)*T + 2*bvec(idp);
     % Add the two functions, "function (two) of T "
-    smbtot = @(T) smb(T) + smbacc(T);
+    smbtot = @(T) smb(T) + 0.5*sqrt(arvar)*smbacc(T);
     
     
     % Now compute the smb and smb acceleration
@@ -831,7 +838,6 @@ l1 = legend([p2 p1(1) fi1], legstrs); legset(l1)
 % Pretty
 xl = xlabel('Warming, T [$^{\circ}$C]'); textset(xl)
 yl = ylabel('$\Delta$T [$^{\circ}$C]'); textset(yl)
-
 
 
 % Figure: Delta SMB
