@@ -694,6 +694,7 @@ middle = indics(ceil(numel(indics) / 2));
 % Figure: dV/dt(T) and some illustration
 fig010 = figure(010); hold on; box on; figset(fig010)
 legs = zeros(nvals, 1);
+orgplot = gca;
 
 % Plot dV/dt(T) for different volumes
 for ii = 1:nvals
@@ -713,10 +714,6 @@ xl = xlabel('Temperature $\bar{T}$ [$^{\circ}$C]'); textset(xl)
 yl = ylabel('$\dot{V}$ [mm SLE yr$^-1$]'); textset(yl)
 l1 = legend(num2str(legs, '%1.1f'), 'Location', 'SouthEast'); legset(l1)
 legpos = l1.Position;
-% Write 'Volume [m. SLE]' over the legend box
-text(2.7, -6.8, ...
-    'Volume [m. SLE]', 'Fontsize', fs, 'Interpreter', 'Latex',...
-    'BackgroundColor', 'w');
 xlim([-1 4])
 
 % Now do the picture-in-picture. Values are chosen for visibility.
@@ -725,20 +722,42 @@ w = 2.75;                      % Width
 ypos = -3.5;                % Lower edge
 h = 4;                      % Height
 % Draw rectangle around
-rectangle('Position', [xpos ypos w h], 'LineStyle', '-.')
+rectangle('Position', [xpos ypos w h])%, 'LineStyle', '-.')
 % Find T at middle of the box
 midboxtemp = xpos + 0.5*w;
 
-% 
+% Make lines from box to insert corners. First get corners of box
+xboxupleft = xpos;
+yboxupleft = ypos + h;
+xboxdownright = xpos + w;
+yboxdownright = ypos;
+
+% Normalized figure units
+[xbul, ybul] = ds2nfu(xboxupleft, yboxupleft);
+[xbdr, ybdr] = ds2nfu(xboxdownright, yboxdownright);
+
+% Make box for plot-in-plot; [left bottom width height]
+%ax2 = axes('Position', [0.2, 0.15  0.45 0.45]);
+insleft = 0.2;
+insbottom = 0.15;
+inswidth = 0.4;
+insheight = 0.4;
+
+
+
 % We are plotting this curve
 interestvec = f(middle,:);
-% Make box for plot-in-plot
-ax2 = axes('Position', [0.2, 0.15  0.45 0.45]);
+ax2 = axes('Position', [insleft insbottom  inswidth insheight]);
 hold on; box on
-plot(ax2, Tvec, interestvec, 'Color', keepcol)
+plot(ax2, Tvec, interestvec, 'Color', keepcol, 'LineWidth', 2.5)
 xlim([xpos, xpos+w])
 ylim([ypos, ypos+h])
-% 
+
+% Make lines from corner to corner
+annotation('line', [xbul, insleft], [ybul, insbottom+insheight], ...
+    'LineStyle', ':')
+annotation('line', [xbdr, insleft+inswidth], [ybdr, insbottom], ...
+    'LineStyle', ':')
 
 %Plot middle, +/- sigma
 [~, ind0] = min(abs(Tvec - midboxtemp));
@@ -767,7 +786,7 @@ set(gca, 'ytick', [])
 
 yl = ylim;
 ydist = yl(2) - yl(1);
-sigstr = sprintf('$\\sigma$');%, 'Fontsize', fs, 'Interpreter', 'Latex');
+sigstr = sprintf('$\\sigma_T$');%, 'Fontsize', fs, 'Interpreter', 'Latex');
 
 xa1 = [midboxtemp - sqrt(arvar); midboxtemp-0.005];
 yp1 = (yl(1) + 0.6*(yl(2) - yl(1)));
@@ -796,6 +815,12 @@ set(l1, 'Color', 'k', 'LineStyle', '-.')
 l2 = line(Tvec(indP)*[1 1], [ya1(2) interestvec(indP)]);
 set(l2, 'Color', 'k', 'LineStyle', '-.')
 
+
+% Write 'Volume [m. SLE]' over the legend box
+%set('gca', orgplot)
+text(orgplot, 2.7, -6.8, ...
+    'Volume [m. SLE]', 'Fontsize', fs, 'Interpreter', 'Latex',...
+    'BackgroundColor', 'w');
 
 %% Save figures?
 % figure names correspond to AGU figure naming convention
