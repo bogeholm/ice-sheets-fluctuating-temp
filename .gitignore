@@ -12,6 +12,9 @@
 # https://stackoverflow.com/questions/2545602/git-ignore-sub-folders
 robinsondata/
 
+# -------------------- MATLAB temporary files
+*.m~
+
 # -------------------- R specifif files ----------------------------------------
 *.Rhistory
 

@@ -9,9 +9,25 @@ clearvars; close all; clc; format compact
 rng('default')
 % -------------------------------------------------------------------------
 
+
+% -------------------------------------------------------------------------
+tic
+% -------------------------------------------------------------------------
+
+
 % -------------------------------------------------------------------------
 % Add subfolders in userpath
 addpath(genpath(userpath));
+% -------------------------------------------------------------------------
+
+
+% ------------- Common setup ----------------------------------------------
+run('icesheetsSetup')
+% -------------------------------------------------------------------------
+
+
+% ------------- Load parameters -------------------------------------------
+run('oerlemansParam')
 % -------------------------------------------------------------------------
 
 
@@ -27,62 +43,22 @@ thisrun = 'test';
 
 
 % -------------------------------------------------------------------------
-tic
-% -------------------------------------------------------------------------
-
-
-% -------------------------------------------------------------------------
 % Turn off warnings for ds2nfu
 warning('off', 'MATLAB:nargchk:deprecated')
 % -------------------------------------------------------------------------
 
 
-% ------------- Pretty figures --------------------------------------------
-fs = 14;
-figset = @(f)   set(f, 'Color', 'w');
-textset = @(h)  set(h, 'Fontsize', fs, 'Interpreter', 'Latex');
-legset = @(l)   set(l, 'FontSize', fs, 'Interpreter', 'Latex');
-hcbset = @(h) set(h, 'FontSize', fs, 'FontName', 'Times New Roman');
-set(0,'DefaultAxesFontSize',8)
-% -------------------------------------------------------------------------
-
-% ------------- Prettier colors -------------------------------------------
-cls = lines(5);
-blue   = cls(1, :);
-red    = cls(2, :);
-yellow = cls(3, :);
-purple = cls(4, :);
-green  = cls(5, :);
-% -------------------------------------------------------------------------
 
 
-% -------------------------------------------------------------------------
-% Where figures and data is stored
-figpath = 'gfx/';
-texpath = 'tex/';
-datapath = 'data/';
-robinsionpath = 'robinsondata/';
-figformat = '.pdf';
-% -------------------------------------------------------------------------
-
-
-% ------------- Save figures? ---------------------------------------------
+% ------------- Verbosity ---------------------------------------------
 if savefigures == true
     disp('*--------------> Saving figures <--------------*')
 end
 
 
-
-% ------------- Save data? ------------------------------------------------
 if savedata == true
     disp('*--------------> Saving data <-----------------*')
 end
-% -------------------------------------------------------------------------
-
-
-
-% ------------- Load parameters -------------------------------------------
-run('oerlemansParam')
 % -------------------------------------------------------------------------
 
 
@@ -819,7 +795,13 @@ set(l2, 'Color', 'k', 'LineStyle', '-.')
 %% Save figures?
 if savefigures
     fprintf('Saving figures...\n');
-    export_fig(fig010, [figpath, 'MassBalance-2016',    figformat]);
+    % png files used to generate README.md
+    export_fig(fig010, [figpath, 'MassBalance-2016.png']);
+    % export_fig does not work with this figure
+    print(fig011, [figpath, 'Sim+Approx-2016.png'], '-dpng', '-r200')
+    
+    % pdf files for the article
+    export_fig(fig010, [figpath, 'MassBalance-2016.pdf']);
     %print(fig011, [figpath, 'Sim+Approx-2016.eps'], '-depsc', '-r400')
     print(fig011, [figpath, 'Sim+Approx-2016.pdf'], '-dpdf', '-r400')
     

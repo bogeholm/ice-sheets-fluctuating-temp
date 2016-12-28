@@ -1,63 +1,61 @@
 % 12 month average
 % --> sigma
+% -------------------------------------------------------------------------
 clearvars; close all; clc; format compact
 rng('default')
-
-% -------------------------------------------------------------------------
-tic;
-% -------------------------------------------------------------------------
-
-
-% ------------- Save figures? ---------------------------------------------
-savefigures = false; 
-%
-if savefigures == true;
-    display('*--------------> Saving figures <--------------*')
-end
-% -------------------------------------------------------------------------
-
-% ------------- Save data? ------------------------------------------------
-savedata = false; 
-%
-if savedata == true;
-    display('*--------------> Saving data <-----------------*')
-end
-% -------------------------------------------------------------------------
-
-% ------------- Pretty figures --------------------------------------------
-fs = 18;
-figset = @(f)   set(f, 'Color', 'w');
-textset = @(h)  set(h, 'Fontsize', fs, 'Interpreter', 'Latex');
-legset = @(l)   set(l, 'FontSize', fs, 'Interpreter', 'Latex');
-hcbset = @(h) set(h, 'FontSize', fs, 'FontName', 'Times New Roman');
-set(0,'DefaultAxesFontSize',12)
 % -------------------------------------------------------------------------
 
 
 % -------------------------------------------------------------------------
-addpath(genpath('MATLAB-Utilities'));
-% Current working directory
-currentwd = pwd;
-% Parent folder
-parentf = fileparts(currentwd);
-% Where figures and data is stored
-figpath = [parentf, '/LaTeX[IceSheets][2016]/gfx/'];
-datapath = [parentf, '/Data[IceSheets][2016]/'];
-figformat = '.pdf';
+tic
+% -------------------------------------------------------------------------
+
+
+% -------------------------------------------------------------------------
+% Add subfolders in userpath
+addpath(genpath(userpath));
+% -------------------------------------------------------------------------
+
+
+% ------------- Common setup ----------------------------------------------
+run('icesheetsSetup')
+% -------------------------------------------------------------------------
+
+
+% -------------------------------------------------------------------------
 % Save results of ar1 fitting here
 ar1filename = [datapath, 'ar1results.mat'];
 % -------------------------------------------------------------------------
 
 
-% ------------- Prettier colors -------------------------------------------
-cls = lines(5);
-blue   = cls(1, :);
-red    = cls(2, :);
-yellow = cls(3, :);
-purple = cls(4, :);
-green  = cls(5, :);
-grey   = 0.4*[1 1 1]; 
 % -------------------------------------------------------------------------
+savefigures = true;
+%savefigures = false;
+%savedata = true;
+savedata = true;
+% 'test' is quite quick (~20 seconds), 'production' around 5 minutes
+thisrun = 'test';
+%thisrun = 'production';
+% -------------------------------------------------------------------------
+
+
+
+% ------------- Verbosity ---------------------------------------------
+if savefigures == true
+    disp('*--------------> Saving figures <--------------*')
+end
+
+
+if savedata == true
+    disp('*--------------> Saving data <-----------------*')
+end
+% -------------------------------------------------------------------------
+
+
+
+
+
+
 
 
 
@@ -100,9 +98,9 @@ xlim([uyear(1) uyear(end)])
 
 
 % Save temperatures for use in R
-if savedata == true
-    csvwrite('greenlandAVGtemp.csv', [uyear avgtemp])
-end
+%if savedata == true
+%    csvwrite([datapath, 'greenlandAVGtemp.csv'], [uyear avgtemp])
+%end
 
 
 %% Estimate autocorrelation of Greenland temperature
@@ -244,8 +242,8 @@ ylim([1 2])
 %% Save figures?
 if savefigures
     fprintf('Saving figures...\n');
-    export_fig(fig001, [figpath, 'GreenlandTemp-2016', figformat])
-    export_fig(fig004, [figpath, 'GreenlandTempSim-2016', figformat])
+    %export_fig(fig001, [figpath, 'GreenlandTemp-2016.pdf'])
+    export_fig(fig001, [figpath, 'GreenlandTemp-2016.png'])
 end
 
 
