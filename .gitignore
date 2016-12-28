@@ -52,8 +52,11 @@ robinsondata/
 *.swp
 
 # -------------------- Python setup files --------------------------------------
-#*.egg
+*.egg
 
+# -------------------- Jupyter checpoints
+*.ipynb_checkpoints
+.ipynb_checkpoints/
 
 # -------------------- Packages ------------------------------------------------
 # it's better to unpack these files and commit the raw source
