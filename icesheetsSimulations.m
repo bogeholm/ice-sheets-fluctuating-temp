@@ -2,8 +2,8 @@
 %
 % Troels B. Mikkelsen - bogeholm@nbi.ku.dk
 % 2015 - 2016
-%
-%
+
+
 % -------------------------------------------------------------------------
 clearvars; close all; clc; format compact
 rng('default')
@@ -713,9 +713,9 @@ xl = xlabel('Temperature $\bar{T}$ [$^{\circ}$C]'); textset(xl)
 yl = ylabel('$\dot{V}$ [mm SLE yr$^-1$]'); textset(yl)
 l1 = legend(num2str(legs, '%1.1f'), 'Location', 'SouthEast'); legset(l1)
 legpos = l1.Position;
-% Write 'Volume' over the legend box
-text(3.25, -7, ...
-    'Volume', 'Fontsize', fs, 'Interpreter', 'Latex',...
+% Write 'Volume [m. SLE]' over the legend box
+text(2.7, -6.8, ...
+    'Volume [m. SLE]', 'Fontsize', fs, 'Interpreter', 'Latex',...
     'BackgroundColor', 'w');
 xlim([-1 4])
 
@@ -798,20 +798,21 @@ set(l2, 'Color', 'k', 'LineStyle', '-.')
 
 
 %% Save figures?
+% figure names correspond to AGU figure naming convention
 if save_pdf
     fprintf('Saving pdfs...\n');
     % pdf files for the article
-    export_fig(fig010, [pdfpath, 'MassBalance-2016.pdf']);
+    export_fig(fig010, [pdfpath, '2016gl070016-p02.pdf']);
     %print(fig011, [figpath, 'Sim+Approx-2016.eps'], '-depsc', '-r400')
-    print(fig011, [pdfpath, 'Sim+Approx-2016.pdf'], '-dpdf', '-r400')
+    print(fig011, [pdfpath, '2016gl070016-p01.pdf'], '-dpdf', '-r400')
 end
 
 % png files used to generate README.md
 if save_png
     fprintf('Saving pngs...\n');
-    export_fig(fig010, [pngpath, 'MassBalance-2016.png']);
+    export_fig(fig010, [pngpath, '2016gl070016-p02.png']);
     % export_fig does not work with this figure
-    print(fig011, [pngpath, 'Sim+Approx-2016.png'], '-dpng', '-r200')
+    print(fig011, [pngpath, '2016gl070016-p01.png'], '-dpng', '-r200')
 end
 
 display(temps)

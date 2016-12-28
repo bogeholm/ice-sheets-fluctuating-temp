@@ -29,10 +29,10 @@ run('icesheetsSetup')
 % -------------------------------------------------------------------------
 % Save?
 % pdf's are used in the article, png's in the README
-save_pdf = true;
-save_png = true;
-%save_pdf = false;
-%save_png = false;
+%save_pdf = true;
+%save_png = true;
+save_pdf = false;
+save_png = false;
 % -------------------------------------------------------------------------
 
 
@@ -55,7 +55,7 @@ mm_SLE_pr_Gt = 2.6958e-3;
 try
     ar1results = load([datapath, 'ar1results.mat']);
 catch FE
-    display('No file ar1results.mat - run greenlandTemperature2016.m')
+    disp('No file ar1results.mat - run greenlandTemperature.m')
     % Can't proceed without these results
     rethrow(FE)
 end
@@ -533,10 +533,10 @@ htex2 = annotation('textarrow', nxa2, nya2, 'String', sa2); textset(htex2)
 
 % Legend strings
 legstrs = {'$\tilde{f}(T)$ := SMB$(T)$', ...
-    '$\tilde{f}(T) + $Var$(T)/2 \times \tilde{f}_{TT}(T)$', ...
+    '$\tilde{f}(T) + \sigma_T^2/2 \times \tilde{f}_{TT}(T)$', ...
     '$\tilde{f}(T_0)$', ...
-    '$\tilde{f}(T_0) + $Var$(T)/2 \times \tilde{f}_{TT}(T_0)$', ...
-    '$\tilde{f}(\hat{T}) + $Var$(T)/2 \times \tilde{f}_{TT}(\hat{T})$'};
+    '$\tilde{f}(T_0) + \sigma_T^2/2 \times \tilde{f}_{TT}(T_0)$', ...
+    '$\tilde{f}(\hat{T}) + \sigma_T^2/2 \times \tilde{f}_{TT}(\hat{T})$'};
 % Legend
 l1 = legend([pf0 pf2 scf0 scf2 scfn], legstrs, ...
     'location', 'southwest'); legset(l1)
@@ -934,10 +934,10 @@ yl = ylabel('$\Delta$SMB [mm SLE yr$^{-1}$]'); textset(yl)
 % pdf's for the article
 if save_pdf == true
     disp('Saving pdfs...')
-    export_fig(fig002, [pdfpath, 'definition-deltaT+deltaSMB.pdf'])
+    export_fig(fig002, [pdfpath, '2016gl070016-p03.pdf'])
     % "export_fig currently supports transparent patches/areas only 
     % in PNG output.
-    print(fig009, [pdfpath, 'likely-deltaT+deltaSMB-2016.pdf'], ...
+    print(fig009, [pdfpath, '2016gl070016-p04.pdf'], ...
         '-dpdf', '-r400')
     export_fig(fig118, [pdfpath, 'VolumeHistogram.pdf'])
     export_fig(fig119, [pdfpath, 'VolumeHistogramMaxtemp.pdf'])
@@ -946,8 +946,8 @@ end
 % png's for the README
 if save_png == true
     disp('Saving pngs...')
-    export_fig(fig002, [pngpath, 'definition-deltaT+deltaSMB.png'])
-    export_fig(fig009, [pngpath, 'likely-deltaT+deltaSMB-2016.png'])
+    export_fig(fig002, [pngpath, '2016gl070016-p03.png'])
+    export_fig(fig009, [pngpath, '2016gl070016-p04.png'])
     export_fig(fig118, [pngpath, 'VolumeHistogram.png'])
     export_fig(fig119, [pngpath, 'VolumeHistogramMaxtemp.png'])
 end

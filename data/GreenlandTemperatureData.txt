@@ -3,7 +3,7 @@
 # To obtain this time series, please follow these steps:
 #
 # 1)  Go to http://climexp.knmi.nl/start.cgi
-# 2)  Select "Monthly raanalysis fields"
+# 2)  Select "Monthly reanalysis fields"
 # 3)  Unfold "Twentieth Century Reanalysis V2c 1851-2011"
 # 4)  Mark "temperature / surface"
 #

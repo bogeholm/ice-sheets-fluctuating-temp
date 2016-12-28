@@ -1,5 +1,9 @@
-% 12 month average
-% --> sigma
+%% Load Greenland temperature data and fit AR(1)-model
+%  to annual averages
+%
+% Troels B. Mikkelsen - bogeholm@nbi.ku.dk
+% 2015 - 2016
+
 % -------------------------------------------------------------------------
 clearvars; close all; clc; format compact
 rng('default')
@@ -39,8 +43,8 @@ save_png = false;
 
 
 % -------------------------------------------------------------------------
-savedata = true;
 %savedata = true;
+savedata = true;
 % -------------------------------------------------------------------------
 
 
@@ -233,13 +237,13 @@ ylim([1 2])
 % Save figures?
 if save_pdf
     fprintf('Saving pdfs...\n');
-    export_fig(fig001, [pdfpath, 'GreenlandTemp-2016.pdf'])
+    export_fig(fig001, [pdfpath, 'GreenlandTemp.pdf'])
 end
 
 % Save figures?
 if save_png
     fprintf('Saving pngs...\n');
-    export_fig(fig001, [pngpath, 'GreenlandTemp-2016.png'])
+    export_fig(fig001, [pngpath, 'GreenlandTemp.png'])
 end
 
 
