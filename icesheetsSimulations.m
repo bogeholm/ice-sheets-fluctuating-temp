@@ -32,11 +32,24 @@ run('oerlemansParam')
 
 
 % -------------------------------------------------------------------------
-savefigures = true;
-%savefigures = false;
+% Save figures?
+% pdf's are used in the article, png's in the README
+%save_pdf = true;
+%save_png = true;
+save_pdf = false;
+save_png = false;
+% -------------------------------------------------------------------------
+
+
+% -------------------------------------------------------------------------
+% Save data?
 %savedata = true;
 savedata = false;
-% 'test' is quite quick (~20 seconds), 'production' around 5 minutes
+% -------------------------------------------------------------------------
+
+% -------------------------------------------------------------------------
+% 'test' is quite quick run (~20 seconds on dual core i7), 
+% 'production' around 1 minute
 thisrun = 'test';
 %thisrun = 'production';
 % -------------------------------------------------------------------------
@@ -51,11 +64,6 @@ warning('off', 'MATLAB:nargchk:deprecated')
 
 
 % ------------- Verbosity ---------------------------------------------
-if savefigures == true
-    disp('*--------------> Saving figures <--------------*')
-end
-
-
 if savedata == true
     disp('*--------------> Saving data <-----------------*')
 end
@@ -64,25 +72,22 @@ end
 
 % ------------- Parameters for integration --------------------------------
 dt           = 1.0;         % 1.0 in article
-timemax      = 1e5;         % 5e4 in article
+timemax      = 1e5;         % 1e5 in article
 % -------------------------------------------------------------------------
 
 
 % ------------- Other parameters ------------------------------------------
 if isequal(thisrun, 'test')
     n_sims      = 2; % Number of simulations per temperature
-    %temps_show = linspace(-2, 1.5, 3)';
     % Temps for steady numerical simulations plot
     temps = [-1.5; 0; 1.5; 3];
     temps_show = temps;
     npoints      = 300;         % 
 elseif isequal(thisrun, 'production')
     n_sims      = 5; % Number of simulations per temperature
-    %temps_show = (-2:0.125:4)';
     % Temps for steady numerical simulations plot
-    %temps = [-1.5; -0.5; 0.5; 1.5; 2.5];
     temps = [-1.5; 0; 1.5; 3];
-    npoints      = 1200;         % 800 in article
+    npoints      = 1200;         % 1200 in article
     temps_show = temps;
 end
 
@@ -110,7 +115,7 @@ arvar_func = @(a1, s) s^2 / (1 - a1^2);
 try
     ar1results = load([datapath, 'ar1results.mat']);
 catch FE
-    display('No file ar1results.mat. Please run greenlandTemperature.m')
+    disp('No file ar1results.mat. Please run greenlandTemperature.m')
     % Can't proceed without these results
     rethrow(FE)
 end
@@ -793,18 +798,20 @@ set(l2, 'Color', 'k', 'LineStyle', '-.')
 
 
 %% Save figures?
-if savefigures
-    fprintf('Saving figures...\n');
-    % png files used to generate README.md
-    export_fig(fig010, [figpath, 'MassBalance-2016.png']);
-    % export_fig does not work with this figure
-    print(fig011, [figpath, 'Sim+Approx-2016.png'], '-dpng', '-r200')
-    
+if save_pdf
+    fprintf('Saving pdfs...\n');
     % pdf files for the article
-    export_fig(fig010, [figpath, 'MassBalance-2016.pdf']);
+    export_fig(fig010, [pdfpath, 'MassBalance-2016.pdf']);
     %print(fig011, [figpath, 'Sim+Approx-2016.eps'], '-depsc', '-r400')
-    print(fig011, [figpath, 'Sim+Approx-2016.pdf'], '-dpdf', '-r400')
-    
+    print(fig011, [pdfpath, 'Sim+Approx-2016.pdf'], '-dpdf', '-r400')
+end
+
+% png files used to generate README.md
+if save_png
+    fprintf('Saving pngs...\n');
+    export_fig(fig010, [pngpath, 'MassBalance-2016.png']);
+    % export_fig does not work with this figure
+    print(fig011, [pngpath, 'Sim+Approx-2016.png'], '-dpng', '-r200')
 end
 
 display(temps)

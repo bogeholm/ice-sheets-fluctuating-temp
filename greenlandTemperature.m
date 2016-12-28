@@ -29,36 +29,27 @@ ar1filename = [datapath, 'ar1results.mat'];
 
 
 % -------------------------------------------------------------------------
-savefigures = true;
-%savefigures = false;
-%savedata = true;
+% Save figures?
+% pdf's are used in the article, png's in the README
+%save_pdf = true;
+%save_png = true;
+save_pdf = false;
+save_png = false;
+% -------------------------------------------------------------------------
+
+
+% -------------------------------------------------------------------------
 savedata = true;
-% 'test' is quite quick (~20 seconds), 'production' around 5 minutes
-thisrun = 'test';
-%thisrun = 'production';
+%savedata = true;
 % -------------------------------------------------------------------------
 
 
 
 % ------------- Verbosity ---------------------------------------------
-if savefigures == true
-    disp('*--------------> Saving figures <--------------*')
-end
-
-
 if savedata == true
     disp('*--------------> Saving data <-----------------*')
 end
 % -------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
 
 
 
@@ -239,13 +230,17 @@ yl = ylabel('Variance of $T$'); textset(yl)
 ylim([1 2])
 %}
 
-%% Save figures?
-if savefigures
-    fprintf('Saving figures...\n');
-    %export_fig(fig001, [figpath, 'GreenlandTemp-2016.pdf'])
-    export_fig(fig001, [figpath, 'GreenlandTemp-2016.png'])
+% Save figures?
+if save_pdf
+    fprintf('Saving pdfs...\n');
+    export_fig(fig001, [pdfpath, 'GreenlandTemp-2016.pdf'])
 end
 
+% Save figures?
+if save_png
+    fprintf('Saving pngs...\n');
+    export_fig(fig001, [pngpath, 'GreenlandTemp-2016.png'])
+end
 
 
 

@@ -24,7 +24,9 @@ violetred = [255, 62, 150] / 255; % violetred 1
 
 % -------------------------------------------------------------------------
 % Where figures and data is stored
-figpath = 'gfx/';
+%figpath = 'gfx/';
+pdfpath = 'pdf/';
+pngpath = 'png/';
 texpath = 'tex/';
 datapath = 'data/';
 robinsonpath = 'robinsondata/';

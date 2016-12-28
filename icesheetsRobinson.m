@@ -1,7 +1,7 @@
-%% Investigate Robinson et al.'s results
+%% Apply effect of fluctuating temperature to Robinson et al.'s results
 %
 % Troels B. Mikkelsen - bogeholm@nbi.ku.dk
-% 2015 - 2016
+% 2015 - 2017
 
 
 % -------------------------------------------------------------------------
@@ -26,8 +26,14 @@ run('icesheetsSetup')
 % -------------------------------------------------------------------------
 
 
-savefigures = false;
-
+% -------------------------------------------------------------------------
+% Save?
+% pdf's are used in the article, png's in the README
+save_pdf = true;
+save_png = true;
+%save_pdf = false;
+%save_png = false;
+% -------------------------------------------------------------------------
 
 % ------------- Variance of AR(1) process ---------------------------------
 %https://en.wikipedia.org/wiki/Autoregressive_model#...
@@ -46,25 +52,18 @@ mm_SLE_pr_Gt = 2.6958e-3;
 try
     ar1results = load([datapath, 'ar1results.mat']);
 catch FE
-    display('No file ar1results.mat - run greenlandTemperature2016.m')
-    % Can't proceed without these results
+    % Inform user of problem ...
+    disp('No file ar1results.mat - run greenlandTemperature2016.m')
+    % ... and exit. Can't proceed without these results
     rethrow(FE)
 end
-%display(ar1results.estar1)
-%display(ar1results.estvar)
+
 estar1 = ar1results.estar1;
 estvar = ar1results.estvar;
 arvar = arvar_func(estar1, sqrt(estvar));
 sigmaval = sqrt(arvar);
 % -------------------------------------------------------------------------
 
-
-
-% ------------- Save figures? ---------------------------------------------
-if savefigures == true
-    display('*--------------> Saving figures <--------------*')
-end
-% -------------------------------------------------------------------------
 
 
 % ------------- Load parameters -------------------------------------------
@@ -86,34 +85,6 @@ for ii = 0:nvars-1
     %display(natts)
 end
 
-% From Robinson: 
-% "
-% Please find the requested data attached in the netcdf file. The time 
-% series variables I have included are 
-% 
-% dT_ann    (annual mean temp anomaly), 
-% dT_jja    (summer mean temp anomaly), 
-% smb       (total annual surface mass balance of the ice sheet) and 
-% Vtot      (the total volume of the ice sheet). 
-% 
-% In addition, I have included the parameters from the ensemble 
-%
-% itm_c     (controlling the melting, a higher value means stronger melt 
-%           in the model), 
-% ppfac     (controlling the precip sensitivity in the model, a higher 
-%           values means more precip per degree of warming) and 
-% T_warming (the summer warming applied in the model). 
-% 
-% The former parameters won't mean much to you probably.
-% Concerning the latter, although the simulations are for a constant 
-% applied temp anomaly, note that the first hundred years were ramped up 
-% from no anomaly, in order to avoid numerical problems. This can be seen if 
-% you plot the variable dT_jja, for example. 
-% Also note: there are more simulations here than were shown in the figure 
-% (99 simulations for each temp anomaly applied). 
-% "
-%netcdf.close(ncid)
-%netcdf.inqAttName(ncid, 2,0)
 smbid           = netcdf.inqVarID(ncid, 'smb');
 smbunits        = netcdf.getAtt(ncid, smbid, 'units'); 
 
@@ -954,27 +925,25 @@ xl = xlabel('Warming, T [$^{\circ}$C]'); textset(xl)
 yl = ylabel('$\Delta$SMB [mm SLE yr$^{-1}$]'); textset(yl)
 
 
-%print(gcf, '-dpdf', [figpath, 'likely-deltas-transparent', figformat])
+% pdf's for the article
+if save_pdf == true
+    disp('Saving pdfs...')
+    export_fig(fig002, [pdfpath, 'definition-deltaT+deltaSMB.pdf'])
+    % "export_fig currently supports transparent patches/areas only 
+    % in PNG output.
+    print(fig009, [pdfpath, 'likely-deltaT+deltaSMB-2016.pdf'], ...
+        '-dpdf', '-r400')
+    export_fig(fig118, [pdfpath, 'VolumeHistogram.pdf'])
+    export_fig(fig119, [pdfpath, 'VolumeHistogramMaxtemp.pdf'])
+end
 
-
-
-
-%% Save figures?
-if savefigures == true
-    fprintf('Saving figures...\n');
-    export_fig(fig001, [figpath, 'SMBfits-2016', figformat],...
-        '-transparent')
-    export_fig(fig002, ...
-        [figpath, 'definition-deltaT+deltaSMB-2016', figformat],...
-        '-transparent')
-    export_fig(fig009, [figpath, 'likely-deltaT+deltaSMB-2016', figformat])
-    export_fig(fig010, ...
-        [figpath, 'likely-deltas-transparent', figformat], '-transparent')
-    
-    export_fig(fig117, [figpath, 'VolumeShowcase.pdf'])
-    export_fig(fig118, [figpath, 'VolumeHistogram.pdf'])
-    export_fig(fig119, [figpath, 'VolumeHistogramMaxtemp.pdf'])
-    print(fig117, [figpath, 'VolumeShowcase-2.pdf'], '-dpdf')
+% png's for the README
+if save_png == true
+    disp('Saving pngs...')
+    export_fig(fig002, [pngpath, 'definition-deltaT+deltaSMB.png'])
+    export_fig(fig009, [pngpath, 'likely-deltaT+deltaSMB-2016.png'])
+    export_fig(fig118, [pngpath, 'VolumeHistogram.png'])
+    export_fig(fig119, [pngpath, 'VolumeHistogramMaxtemp.png'])
 end
 
 

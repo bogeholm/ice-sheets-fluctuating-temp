@@ -34,23 +34,22 @@ run('oerlemansParam')
 % -------------------------------------------------------------------------
 
 
-savefigures = false;
-savedata = false;
-thisrun = 'test';
+% -------------------------------------------------------------------------
+% Save figures?
+% pdf's are used in the article, png's in the README
+save_pdf = true;
+save_png = true;
+%save_pdf = false;
+%save_png = false;
+% -------------------------------------------------------------------------
 
-% ------------- Save figures? ---------------------------------------------
-if savefigures == true
-    display('*--------------> Saving figures <--------------*')
-end
 % -------------------------------------------------------------------------
-% Preserve order in the plots!
-if savefigures == true
-    set(0,'DefaultFigureWindowStyle','normal')
-else
-    set(0,'DefaultFigureWindowStyle','normal')
-    %set(0,'DefaultFigureWindowStyle','docked')
-end
+%savedata = false;
+savedata = true;
+%thisrun = 'test';
+thisrun = 'production';
 % -------------------------------------------------------------------------
+
 
 
 
@@ -758,17 +757,16 @@ display(fVVterm ./ fmat * 100);
 
 
 
-%% Save figures?
-if savefigures
-    %fprintf('Saving figures...\n');
-%     for idx = 1:n_temps
-%         fig = plotcells{idx};
-%         title = ['expectation_T_', sprintf('%.2f', temps(idx))];
-%         export_fig(fig, [figpath, title, '.png']);
-%     end
-    export_fig(fig117, [figpath, 'VarianceFunctionTime',    figformat]);%, '-transparent')
+%% Save pdf?
+if save_pdf
+    disp('Saving pdfs...')
+    export_fig(fig117, [pdfpath, 'VarianceFunctionTime.pdf'])
 end
 
+if save_png
+    disp('Saving pngs...')
+    export_fig(fig117, [pngpath, 'VarianceFunctionTime.png'])
+end
 
 % -------------------------------------------------------------------------
 fprintf('Done.\n')

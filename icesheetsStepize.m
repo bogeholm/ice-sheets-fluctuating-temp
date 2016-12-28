@@ -33,13 +33,12 @@ run('oerlemansParam')
 
 
 % -------------------------------------------------------------------------
-savefigures = true;
-%savefigures = false;
-%savedata = true;
-savedata = false;
-% 'test' is quite quick (~20 seconds), 'production' around 5 minutes
-thisrun = 'test';
-%thisrun = 'production';
+% Save figures?
+% pdf's are used in the article, png's in the README
+%save_pdf = true;
+%save_png = true;
+save_pdf = false;
+save_png = false;
 % -------------------------------------------------------------------------
 
 
@@ -450,12 +449,20 @@ yl = ylabel('Volume [m. SLE]'); textset(yl)
 
 
 
-%% ------------------------------------------------------------------------
-export_fig(fig004, [figpath, 'StepSize-2016', '.pdf']);
-%% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+if save_pdf
+    disp('Saving pdfs...')
+    export_fig(fig004, [pdfpath, 'StepSize.pdf']);
+end
+% ------------------------------------------------------------------------
+if save_png
+    disp('Saving pngs...')
+    export_fig(fig004, [pngpath, 'StepSize.png']);
+end
+% ------------------------------------------------------------------------
 
 
-%% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
 toc;
 % -------------------------------------------------------------------------
 
