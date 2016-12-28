@@ -206,7 +206,7 @@ for idx = 1:numel(stepsizes)
     str = ['$\Delta t = ', sprintf('%.2f', stepsizes(idx)), '$'];
     legstr{idx} = str;
 end
-lh = legend(legstr, 'location', 'northwest'); legset(lh)
+lh = legend(legstr, 'location', 'northeast'); legset(lh)
 xl = xlabel('Time [yr]'); textset(xl)
 yl = ylabel('Volume [m. SLE]'); textset(yl)
 
@@ -319,7 +319,7 @@ for idx = 1:numel(stepsizes)
     legstr{idx} = str;
 end
 
-lh = legend(legstr, 'location', 'northwest'); legset(lh)
+lh = legend(legstr, 'location', 'northeast'); legset(lh)
 xl = xlabel('Time [yr]'); textset(xl)
 yl = ylabel('Volume [m. SLE]'); textset(yl)
 
