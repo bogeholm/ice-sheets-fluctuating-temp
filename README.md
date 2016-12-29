@@ -16,7 +16,7 @@ doi:
 
 * Fettweis, X., B. Franco, M. Tedesco, J. H. van Angelen, J. T. M. Lenaerts,
 M. R. van den Broeke, and H. Gallée (2013), *Estimating Greenland ice sheet
-surface mass balance contribution to future sea level rise using the regional 
+surface mass balance contribution to future sea level rise using the regional
 atmospheric climate model MAR*, The Cryosphere, 7, 469–489, doi:
 [10.5194/tc-7-469-2013](https://dx.doi.org/10.5194/tc-7-469-2013).
 
