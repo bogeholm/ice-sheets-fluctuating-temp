@@ -10,6 +10,7 @@ rng('default')
 % -------------------------------------------------------------------------
 
 
+
 % -------------------------------------------------------------------------
 tic
 % -------------------------------------------------------------------------
@@ -29,10 +30,10 @@ run('icesheetsSetup')
 % -------------------------------------------------------------------------
 % Save?
 % pdf's are used in the article, png's in the README
-%save_pdf = true;
-%save_png = true;
-save_pdf = false;
-save_png = false;
+save_pdf = true;
+save_png = true;
+%save_pdf = false;
+%save_png = false;
 % -------------------------------------------------------------------------
 
 
@@ -411,6 +412,7 @@ textset(xl); textset(yl);
 
 %% Showcase the minimization objective
 %  Choose an arbitrary parameter set from avec, bvec, ...
+close all;
 rng('default');
 idx = datasample(1:nitm*nppf, 1, 'Replace', false);
 %idx = 19;
@@ -434,10 +436,13 @@ if manual_limits
     xlimits = [3 5];
     ylimits = [-2.5 -0.2];
 else
-    xlimits = [3 5];
-    ylimits = [smb(tplot)-0.75, smb(tplot)+0.75];
+    xlimits = [3.35 4.5];
+    ylimits = [smb(tplot)-0.45, smb(tplot)+0.25];
 end
 
+% Get x, y distances
+xdist = xlimits(2) - xlimits(1);
+ydist = ylimits(2) - ylimits(1);
 
 % Plot f, f2
 fig002 = figure(002); hold on; box on; figset(fig002)
@@ -481,21 +486,23 @@ scf2 = scatter(tplot, smbtot(tplot), markersize, 's', ...
 % (T^*, SMB^*(T^*))
 scfn = scatter(t_other, smbtot(t_other), markersize, 'h', ...
     'markerfacecolor', red, 'markeredgecolor', red);
+  
+
 
 
 % Showcase these concepts on the figure
 % Vertical arrow
 xv = tplot*[1 1];
-yv = [smb(tplot) smbtot(tplot)];
+yv = [smbtot(tplot) smb(tplot) ];
 % Normalized figure coordinates
 [xnv, ynv] = ds2nfu(xv, yv);
-haxv = annotation('doublearrow', xnv, ynv);
+haxv = annotation('arrow', xnv, ynv);
 % Horizontal arrow
 xh = [t_other tplot];
 yh = [smbtot(t_other), smb(tplot)];
 % Normalized figure coordinates
 [xnh, ynh] = ds2nfu(xh, yh);
-haxh = annotation('doublearrow', xnh, ynh);
+haxh = annotation('arrow', xnh, ynh);
 
 
 % (x, y)-limits and distance
@@ -506,15 +513,15 @@ yd = yl(2) - yl(1);
 
 
 % Textarrow specifying delta SMB
-xa1 = [tplot+0.3*xd tplot ];
+xa1 = [tplot+0.2*xd tplot ];
 % Midpoint of vertical arrow
 yp = 0.5*(smb(tplot) + smbtot(tplot));
 % y-coordinate
-ya1 = [yp - 0.05*yd yp];
+ya1 = [yp - 0.0*yd yp];
 % Normalized figure coordinates
 [nxa1, nya1] = ds2nfu(xa1, ya1);
 % The annotation itself
-sa1 = '$\Delta$ SMB';
+sa1 = '$\Delta$SMB$ > 0$';
 htex1 = annotation('textarrow', nxa1, nya1, 'String', sa1); textset(htex1)
 
 
@@ -527,24 +534,84 @@ ya2 = [0.2*yd + smbtot(t_other) smbtot(t_other)];
 % Normalized figure coordinates
 [nxa2, nya2] = ds2nfu(xa2, ya2);
 % The annotation itself
-sa2 = '$\Delta T$';
+sa2 = '$\Delta T > 0$';
 htex2 = annotation('textarrow', nxa2, nya2, 'String', sa2); textset(htex2)
 
-
+% -------------------------------------------------------------------------
+% Legend and text, CASE 1: f(T_0) + f_TT(T_0) ...
+% -------------------------------------------------------------------------
+%{
 % Legend strings
 legstrs = {'$\tilde{f}(T)$ := SMB$(T)$', ...
-    '$\tilde{f}(T) + \sigma_T^2/2 \times \tilde{f}_{TT}(T)$', ...
+    '$\tilde{f}(T) + \sigma_T^2/2 \cdot \tilde{f}_{TT}(T)$', ...
     '$\tilde{f}(T_0)$', ...
-    '$\tilde{f}(T_0) + \sigma_T^2/2 \times \tilde{f}_{TT}(T_0)$', ...
-    '$\tilde{f}(\hat{T}) + \sigma_T^2/2 \times \tilde{f}_{TT}(\hat{T})$'};
+    '$\tilde{f}(T_0) + \sigma_T^2/2 \cdot \tilde{f}_{TT}(T_0)$', ...
+    '$\tilde{f}(T_0 + \Delta T) + \sigma_T^2/2 \cdot \tilde{f}_{TT}(T_0 + \Delta T)$'};
+    %'$\tilde{f}(\hat{T}) + \sigma_T^2/2 \cdot \tilde{f}_{TT}(\hat{T})$'};
+    
 % Legend
 l1 = legend([pf0 pf2 scf0 scf2 scfn], legstrs, ...
     'location', 'southwest'); legset(l1)
+
+% Put text at the various points
+tp0 = text(tplot+0.05*xdist, smb(tplot), ...
+    'SMB$(T_0)$', 'color', green); textset(tp0)
+
+tp1 = text(tplot-0.3*xdist, smbtot(tplot)-0.0*ydist, ...
+    'SMB$(T_0) + \Delta$SMB$(T_0)$', ...
+    'color', purple); textset(tp1)
+
+% LaTeX newline in MATLAB is not trivial
+tp2_0 = text(t_other-0.25*xdist, smbtot(t_other)-0.0*ydist,...
+      'SMB$(T_0 + \Delta T)$', ...
+      'color', red); textset(tp2_0);
+
+% LaTeX newline in MATLAB is not trivial
+tp2_1 = text(t_other-0.25*xdist, smbtot(t_other)-0.05*ydist,...
+      '$+\Delta $SMB$ (T_0 + \Delta T)$', ...
+      'color', red); textset(tp2_1);
+%}
+% -------------------------------------------------------------------------
+% End case 1
+% -------------------------------------------------------------------------
+
+
+% -------------------------------------------------------------------------
+% Legend and text, CASE 2: [f + f_TT](T_0) ...
+% Legend strings
+legstrs = {'$\tilde{f}(T)$ := SMB$(T)$', ...
+    '$\tilde{f}(T_0)$', ...
+    '$\left[\tilde{f} + \sigma_T^2/2 \cdot \tilde{f}_{TT} \right](T)$', ...
+    '$\left[\tilde{f} + \sigma_T^2/2 \cdot \tilde{f}_{TT}\right](T_0)$', ...
+    '$\left[\tilde{f} + \sigma_T^2/2 \cdot \tilde{f}_{TT}\right](T_0 - \Delta T)$'};
+    %'$\tilde{f}(\hat{T}) + \sigma_T^2/2 \times \tilde{f}_{TT}(\hat{T})$'};
+    
+% Legend
+l1 = legend([pf0 scf0 pf2 scf2 scfn], legstrs, ...
+    'location', 'southwest'); legset(l1)
+
+% Put text at the various points
+tp0 = text(tplot+0.05*xdist, smb(tplot), ...
+    'SMB$(T_0)$', 'color', green); textset(tp0)
+
+tp1 = text(tplot-0.3*xdist, smbtot(tplot)-0.0*ydist, ...
+    '$[$SMB$ - \Delta$SMB$](T_0)$', ...
+    'color', purple); textset(tp1)
+
+% LaTeX newline in MATLAB is not trivial
+tp2_0 = text(t_other-0.4*xdist, smbtot(t_other)-0.0*ydist,...
+      '$[$SMB$ - \Delta$SMB$](T_0 - \Delta T)$', ...
+      'color', red); textset(tp2_0);
+% -------------------------------------------------------------------------
+% End case 2
+% -------------------------------------------------------------------------
+
+
 % Pretty
 xl = xlabel('Warming, T [$^{\circ}$C]'); textset(xl)
 yl = ylabel('$\dot{V}$ [mm SLE yr$^{-1}$]'); textset(yl)
 
-
+%print(fig002, '/Users/bogeholm/Desktop/tezt.png', '-dpng', '-r400')
 
 
 
@@ -946,7 +1013,8 @@ end
 % png's for the README
 if save_png == true
     disp('Saving pngs...')
-    export_fig(fig002, [pngpath, '2016gl070016-p03.png'])
+    print(fig002, [pngpath, '2016gl070016-p03.png'], '-dpng', '-r400')
+    %export_fig(fig002, [pngpath, '2016gl070016-p03.png'])
     export_fig(fig009, [pngpath, '2016gl070016-p04.png'])
     export_fig(fig118, [pngpath, 'VolumeHistogram.png'])
     export_fig(fig119, [pngpath, 'VolumeHistogramMaxtemp.png'])

@@ -4,7 +4,7 @@ figset = @(f)   set(f, 'Color', 'w');
 textset = @(h)  set(h, 'Fontsize', fs, 'Interpreter', 'Latex');
 legset = @(l)   set(l, 'FontSize', fs, 'Interpreter', 'Latex');
 hcbset = @(h) set(h, 'FontSize', fs, 'FontName', 'Times New Roman');
-set(0,'DefaultAxesFontSize',12)
+set(0,'DefaultAxesFontSize',fs)
 % -------------------------------------------------------------------------
 
 % ------------- Prettier colors -------------------------------------------
