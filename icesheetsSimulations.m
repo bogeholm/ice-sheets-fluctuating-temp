@@ -35,9 +35,9 @@ run('oerlemansParam')
 % Save figures?
 % pdf's are used in the article, png's in the README
 %save_pdf = true;
-%save_png = true;
+save_png = true;
 save_pdf = false;
-save_png = false;
+%save_png = false;
 % -------------------------------------------------------------------------
 
 
@@ -710,8 +710,12 @@ end
 
 
 % Pretty plot
-xl = xlabel('Temperature $\bar{T}$ [$^{\circ}$C]'); textset(xl)
-yl = ylabel('$\dot{V}$ [mm SLE yr$^-1$]'); textset(yl)
+% Larger font since this will be a sub panel
+xl = xlabel('Temperature $\bar{T}$ [$^{\circ}$C]'); %textset(xl)
+set(xl, 'Fontsize', 22, 'Interpreter', 'Latex');
+
+yl = ylabel('$\dot{V}$ [mm SLE yr$^-1$]'); %textset(yl)
+set(yl, 'Fontsize', 22, 'Interpreter', 'Latex');
 l1 = legend(num2str(legs, '%1.1f'), 'Location', 'SouthEast'); legset(l1)
 legpos = l1.Position;
 xlim([-1 4])
@@ -838,6 +842,8 @@ if save_png
     export_fig(fig010, [pngpath, '2016gl070016-p02.png']);
     % export_fig does not work with this figure
     print(fig011, [pngpath, '2016gl070016-p01.png'], '-dpng', '-r200')
+    print(fig010, [pngpath, 'figure-two-left-panel.jpg'], '-djpeg', '-r600')
+    export_fig(fig010, [pngpath, '2016gl070016-p02.png']);
 end
 
 display(temps)

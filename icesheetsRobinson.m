@@ -608,8 +608,12 @@ tp2_0 = text(t_other-0.4*xdist, smbtot(t_other)-0.0*ydist,...
 
 
 % Pretty
-xl = xlabel('Warming, T [$^{\circ}$C]'); textset(xl)
-yl = ylabel('$\dot{V}$ [mm SLE yr$^{-1}$]'); textset(yl)
+% Larger font since this will be a sub panel
+xl = xlabel('Warming, T [$^{\circ}$C]'); %textset(xl)
+set(xl, 'Fontsize', 22, 'Interpreter', 'Latex');
+
+yl = ylabel('$\dot{V}$ [mm SLE yr$^{-1}$]'); %textset(yl)
+set(yl, 'Fontsize', 22, 'Interpreter', 'Latex');
 
 %print(fig002, '/Users/bogeholm/Desktop/tezt.png', '-dpng', '-r400')
 
@@ -1014,6 +1018,8 @@ end
 if save_png == true
     disp('Saving pngs...')
     print(fig002, [pngpath, '2016gl070016-p03.png'], '-dpng', '-r400')
+    print(fig002, [pngpath, '2016gl070016-p03.eps'], '-depsc', '-r400')
+    print(fig002, [pngpath, 'figure-two-right-panel.jpg'], '-djpeg', '-r600')
     %export_fig(fig002, [pngpath, '2016gl070016-p03.png'])
     export_fig(fig009, [pngpath, '2016gl070016-p04.png'])
     export_fig(fig118, [pngpath, 'VolumeHistogram.png'])
