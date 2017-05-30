@@ -84,8 +84,8 @@ ncid = netcdf.open(datafile, 'NOWRITE');
 % Display variable names
 for ii = 0:nvars-1
     [varname, vartype, dimids, natts] = netcdf.inqVar(ncid,ii);
-    %display(varname)
-    %display(natts)
+    display(varname)
+    display(natts)
 end
 
 %netcdf.close(ncid)
@@ -151,7 +151,13 @@ nT = numel(Tsorted);
 fig911 = figure(911); hold on; box on; figset(fig911)
 
 %cls = lines(numel(Tsorted));
-cls = lines(11);
+cls = redblue(numel(Tsorted));
+
+% We want volume in meters sea level equivalent (SLE)
+% SLE = OceanSurf * V, where V is in m3
+%
+% Vtot_rob has units 1e6 km3 = 1e15 m3
+rob_sle = 1e15*OceanSurf;
 
 for idi = 1:nitm
     for idj = 1:nppf
@@ -162,13 +168,16 @@ for idi = 1:nitm
             vt = Vtot_rob(N, :);
             vt = vt(vt ~= -9999);
             tax = time_rob(vt ~= -9999);
-            plot(tax, vt, 'Color', cls(idi, :))
+            plot(tax, rob_sle*vt, 'Color', cls(idk, :))
         end
     end
 end
 
-xlim([0.0 02]);
-ylim([1.0 4.0]);
+xlim([0.0 2]);
+%ylim([0.0 4.0]);
+
+xl = xlabel('Time (ka)'); textset(xl)
+yl = ylabel('Volume (m. SLE)'); textset(yl)
 
 line(0.2*[1, 1], ylim, 'Color', 'k')
 
@@ -303,7 +312,7 @@ yl = ylabel('Number of parameter pairs'); textset(yl)
 %% Plot all T(t) for dt = 5 years and t > t(first)
 fig112 = figure(112); hold on; box on; figset(fig112)
 
-cls = lines(numel(Tsorted));
+cls = redblue(numel(Tsorted));
 
 for idi = 1:nitm
     for idj = 1:nppf
@@ -318,10 +327,11 @@ for idi = 1:nitm
     end
 end
 
-xlim([0 0.5]);
-%ylim([3.65 3.8]);
+xlim([0 1]);
+ylim([0 8]);
 
-%}
+xl = xlabel('Time (ka)'); textset(xl)
+yl = ylabel('JJA Mean Temp. Anomaly ($^{\circ}$C)'); textset(yl)
 
 %% Fit 3rd degree polynomial model to all SMBs
 fprintf('Fitting polynomials...\n');
@@ -412,7 +422,6 @@ textset(xl); textset(yl);
 
 %% Showcase the minimization objective
 %  Choose an arbitrary parameter set from avec, bvec, ...
-close all;
 rng('default');
 idx = datasample(1:nitm*nppf, 1, 'Replace', false);
 %idx = 19;
@@ -937,10 +946,9 @@ xl = xlabel('Warming, T [$^{\circ}$C]'); textset(xl)
 yl = ylabel('$\Delta$SMB [mm SLE yr$^{-1}$]'); textset(yl)
 
 
-
 % Figure: Delta T and Delta SMB on same plot
 fig009 = figure(009); hold on; box on; figset(fig009)
-
+subplotfont = 10;
 % Delta T on top
 subplot(2, 1, 1); hold on; box on
 plot(T, Del_T, 'color', lightgrey, 'LineWidth', greywidth);
@@ -951,8 +959,11 @@ set(fi1, 'FaceColor', blue, 'EdgeColor', 'none', 'FaceAlpha', facealpha)
 plot(T, Del_T_likely, 'color', violetred, 'linewidth', redwidth);
 % Pretty
 xlim([2 7])
-yl = ylabel('$\Delta$T [$^{\circ}$C]'); textset(yl)
+yl = ylabel('$\Delta$T [$^{\circ}$C]'); %textset(yl)
+set(yl, 'Fontsize', subplotfont, 'Interpreter', 'Latex');
 
+% tick size
+set(gca, 'FontSize', subplotfont);
 
 % Delta SMB on the bottom
 subplot(2, 1, 2); hold on; box on
@@ -964,9 +975,13 @@ set(fi1, 'FaceColor', blue, 'EdgeColor', 'none', 'FaceAlpha', facealpha)
 plot(T, Del_SMB_likely, 'color', violetred, 'linewidth', redwidth);
 % Pretty
 xlim([2 7])
-xl = xlabel('Warming, T [$^{\circ}$C]'); textset(xl)
-yl = ylabel('$\Delta$SMB [mm SLE yr$^{-1}$]'); textset(yl)
+xl = xlabel('Warming, T [$^{\circ}$C]'); %textset(xl)
+yl = ylabel('$\Delta$SMB [mm SLE yr$^{-1}$]'); %textset(yl)
+set(yl, 'Fontsize', subplotfont, 'Interpreter', 'Latex');
+set(xl, 'Fontsize', subplotfont, 'Interpreter', 'Latex');
 
+% tick size
+set(gca, 'FontSize', subplotfont);
 
 %% Same as above - transparent!
 % Figure: Delta T and Delta SMB on same plot
@@ -1002,7 +1017,7 @@ xl = xlabel('Warming, T [$^{\circ}$C]'); textset(xl)
 yl = ylabel('$\Delta$SMB [mm SLE yr$^{-1}$]'); textset(yl)
 
 
-% pdf's for the article
+% pdf's
 if save_pdf == true
     disp('Saving pdfs...')
     export_fig(fig002, [pdfpath, '2016gl070016-p03.pdf'])
@@ -1010,8 +1025,10 @@ if save_pdf == true
     % in PNG output.
     print(fig009, [pdfpath, '2016gl070016-p04.pdf'], ...
         '-dpdf', '-r400')
+    export_fig(fig112, [pdfpath, 'RobinsonTemperature.pdf'])
     export_fig(fig118, [pdfpath, 'VolumeHistogram.pdf'])
     export_fig(fig119, [pdfpath, 'VolumeHistogramMaxtemp.pdf'])
+    export_fig(fig911, [pdfpath, 'RobinsonVolumeTime.pdf'])
 end
 
 % png's for the README

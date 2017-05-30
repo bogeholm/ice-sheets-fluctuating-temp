@@ -34,9 +34,9 @@ run('oerlemansParam')
 % -------------------------------------------------------------------------
 % Save figures?
 % pdf's are used in the article, png's in the README
-%save_pdf = true;
+save_pdf = true;
 save_png = true;
-save_pdf = false;
+%save_pdf = false;
 %save_png = false;
 % -------------------------------------------------------------------------
 
@@ -50,8 +50,8 @@ savedata = false;
 % -------------------------------------------------------------------------
 % 'test' is quite quick run (~20 seconds on dual core i7), 
 % 'production' around 1 minute
-thisrun = 'test';
-%thisrun = 'production';
+%thisrun = 'test';
+thisrun = 'production';
 % -------------------------------------------------------------------------
 
 
@@ -518,6 +518,7 @@ ylim([1 11])
 
 
 %% Now plot simulations and dV/dt on same plot
+subplotfont = 10;
 % We might be able to do this with copyobj, ... but do it brute force here.
 fig011 = figure(011); figset(fig011)
 
@@ -537,6 +538,11 @@ for idT = 1:n_temps
     %phs{idT} = ph;
 end
 
+% tick size
+set(gca, 'FontSize', subplotfont);
+
+
+
 % And now the fluctuating temperatures
 for idsim = 1:max(2, n_sims)
     for idT = 1:n_temps
@@ -545,9 +551,12 @@ for idsim = 1:max(2, n_sims)
 end
 
 % Pretty plot
+%textset = @(h)  set(h, 'Fontsize', fs, 'Interpreter', 'Latex');
 %tt = title('Steady (thick line) and fluctuating temperature'); textset(tt)
-xl = xlabel('Time [years]'); textset(xl)
-yl = ylabel('Ice Sheet Volume [m SLE]'); textset(yl)
+xl = xlabel('Time [years]'); %textset(xl)
+set(xl, 'Fontsize', subplotfont, 'Interpreter', 'Latex');
+yl = ylabel('Ice Sheet Volume [m SLE]'); %textset(yl)
+set(yl, 'Fontsize', subplotfont, 'Interpreter', 'Latex');
 
 % Legend strings
 legstr = cell(4,1);
@@ -566,6 +575,9 @@ spright = subplot(122); hold on; box on
 ph = pcolor(T2m, V2m, fm);                  
 set(ph, 'edgecolor', 'none');
 
+% tick size
+set(gca, 'FontSize', subplotfont);
+
 colormap(cmap) 
 clim = caxis;
 caxis([-0.8 0.8]*max(abs(clim)));
@@ -575,7 +587,7 @@ hcb = colorbar;
 % Pretty colorbar
 astring = 'dV/dt [mm SLE yr^{-1}]';
 hcb.Label.String = astring;
-set(hcb, 'FontSize', fs, 'FontName', 'Times New Roman')
+set(hcb, 'FontSize', subplotfont, 'FontName', 'Times New Roman')
 
 % Scatter 
 s1 = scatter(temps_show, meanV_show, 'k+');
@@ -595,7 +607,8 @@ sc = scatter(temps_show, meansAR_show, 'ko');
 % Legend
 
 
-xl = xlabel('Temperature $\bar{T}$ [$^{\circ}$C]'); textset(xl)
+xl = xlabel('Temperature $\bar{T}$ [$^{\circ}$C]'); % textset(xl)
+set(xl, 'Fontsize', subplotfont, 'Interpreter', 'Latex');
 
 % % Vertical lines
 % subplot(122); hold on
@@ -665,7 +678,7 @@ legstr = {'$f=0$', ...
     'Constant $\bar{T}$', ...
     'Fluctuating $T_t$'};
 
-varlegset = @(l)   set(l, 'FontSize', 10, 'Interpreter', 'Latex');
+varlegset = @(l)   set(l, 'FontSize', subplotfont, 'Interpreter', 'Latex');
 leg011 = legend(shs, legstr); varlegset(leg011)
 
 

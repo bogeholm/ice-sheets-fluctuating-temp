@@ -57,6 +57,5 @@ rhow    = 1025.0;   % Density of sea water
 SW_From_Ice = rhoi / rhow;
 
 
-%Metres sea level from one Cubi cMetre Ice
+%Metres sea level from one Cubic Metre Ice
 OceanSurf = SW_From_Ice / Ocean_m2;
-%OceanSurf = 361e12; 

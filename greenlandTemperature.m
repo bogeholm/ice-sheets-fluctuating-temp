@@ -35,18 +35,19 @@ ar1filename = [datapath, 'ar1results.mat'];
 % -------------------------------------------------------------------------
 % Save figures?
 % pdf's are used in the article, png's in the README
-%save_pdf = true;
-%save_png = true;
-save_pdf = false;
-save_png = false;
+save_pdf = true;
+save_png = true;
+%save_pdf = false;
+%save_png = false;
 % -------------------------------------------------------------------------
 
 
 % -------------------------------------------------------------------------
 %savedata = true;
-savedata = true;
+savedata = false;
 % -------------------------------------------------------------------------
-
+hlred_rgb = [174 0 20];
+hlred = hlred_rgb / 255;
 
 
 % ------------- Verbosity ---------------------------------------------
@@ -83,19 +84,22 @@ stdtemp = std(avgtemp);
 % Figure: monthly temp and yearly means
 fig001 = figure(001); hold on; box on; figset(fig001)
 p1 = plot(year, temp, 'color', blue);
-p2 = plot(uyear, avgtemp, 'color', red, 'linewidth', 2);
+p2 = plot(uyear, avgtemp, 'color', hlred, 'linewidth', 2);
 % Pretty
 %tt = title('Observed temperature anomaly over Greenland'); textset(tt)
 xl = xlabel('Year'); textset(xl)
-yl = ylabel('Temperature Anomaly [$^{\circ}$C]'); textset(yl)
-l1 = legend([p1 p2], {'Monthly mean', 'Yearly mean'}); legset(l1)
+yl = ylabel('Temperature Anomaly ($^{\circ}$C)'); textset(yl)
+l1 = legend([p1 p2], {'Monthly mean', 'Annual mean'}); legset(l1)
 xlim([uyear(1) uyear(end)])
 
 
-% Save temperatures for use in R
-%if savedata == true
-%    csvwrite([datapath, 'greenlandAVGtemp.csv'], [uyear avgtemp])
-%end
+
+%% ACF of temp
+%  see https://se.mathworks.com/help/econ/autocorr.html
+fig005 = figure(005); figset(fig005)
+autocorr(temp)
+
+
 
 
 %% Estimate autocorrelation of Greenland temperature
