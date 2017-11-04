@@ -534,7 +534,7 @@ end
 
 % Pretty
 xl = xlabel('Time $t$ [years]'); textset(xl)
-yl = ylabel('$[(V - \overline{V})^2](t)$'); textset(yl)
+yl = ylabel('$\left(V(t) - \overline{V}\right)^2$'); textset(yl)
 tt = title('$(V - \overline{V})^2$ as a function of time'); 
 textset(tt)
 ylim([-1 20])
@@ -552,7 +552,7 @@ for idT = 1:n_temps
 end
 
 xl = xlabel('Time $t$ [years]'); textset(xl)
-yl = ylabel('$[(V - \overline{V}) (T - \overline{T})](t)$'); textset(yl)
+yl = ylabel('$\left(V(t) - \overline{V}\right) \left(T(t) - \overline{T}\right)$'); textset(yl)
 tt = title('$(V - \overline{V})(T - \overline{T})$ as a function of time'); 
 textset(tt)
 ylim([-20 20])
@@ -765,7 +765,9 @@ end
 
 if save_png
     disp('Saving pngs...')
-    export_fig(fig117, [pngpath, 'VarianceFunctionTime.png'])
+    %export_fig(fig117, [pngpath, 'VarianceFunctionTime.png'])
+    print(fig117, [pngpath, 'VarianceFunctionTime.png'], '-dpng', '-r600')
+
 end
 
 % -------------------------------------------------------------------------

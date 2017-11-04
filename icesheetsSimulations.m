@@ -727,7 +727,7 @@ end
 xl = xlabel('Temperature $\bar{T}$ [$^{\circ}$C]'); %textset(xl)
 set(xl, 'Fontsize', 22, 'Interpreter', 'Latex');
 
-yl = ylabel('$\dot{V}$ [mm SLE yr$^-1$]'); %textset(yl)
+yl = ylabel('$dV/dt$ [mm SLE yr$^-1$]'); %textset(yl)
 set(yl, 'Fontsize', 22, 'Interpreter', 'Latex');
 l1 = legend(num2str(legs, '%1.1f'), 'Location', 'SouthEast'); legset(l1)
 legpos = l1.Position;

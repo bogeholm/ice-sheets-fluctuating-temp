@@ -30,10 +30,10 @@ run('icesheetsSetup')
 % -------------------------------------------------------------------------
 % Save?
 % pdf's are used in the article, png's in the README
-save_pdf = true;
-save_png = true;
-%save_pdf = false;
-%save_png = false;
+%save_pdf = true;
+%save_png = true;
+save_pdf = false;
+save_png = false;
 % -------------------------------------------------------------------------
 
 
@@ -257,6 +257,9 @@ edges = 4:0.5:10;
 fig118 = figure(118); figset(fig118)
 hhand = histogram(fitdiffs(:) ./ fitmeans(:)*100, edges);
 
+disp('*** Histogram - all values - number of values')
+disp(numel(fitdiffs))
+
 xl = xlabel('(Max. diff. in V) / (mean V) in percent'); textset(xl)
 yl = ylabel('Number of parameter pairs'); textset(yl)
 
@@ -303,6 +306,9 @@ end
 edges = 0:0.25:3;
 fig119 = figure(119); figset(fig119)
 hhand = histogram(fitdiffs(:) ./ fitmeans(:)*100, edges);
+
+disp('*** Histogram - some values - number of values')
+disp(numel(fitdiffs))
 
 xl = xlabel('(Max. diff. in V) / (mean V) in percent'); textset(xl)
 yl = ylabel('Number of parameter pairs'); textset(yl)
@@ -621,7 +627,7 @@ tp2_0 = text(t_other-0.4*xdist, smbtot(t_other)-0.0*ydist,...
 xl = xlabel('Warming, T [$^{\circ}$C]'); %textset(xl)
 set(xl, 'Fontsize', 22, 'Interpreter', 'Latex');
 
-yl = ylabel('$\dot{V}$ [mm SLE yr$^{-1}$]'); %textset(yl)
+yl = ylabel('$dV/dt$ [mm SLE yr$^{-1}$]'); %textset(yl)
 set(yl, 'Fontsize', 22, 'Interpreter', 'Latex');
 
 %print(fig002, '/Users/bogeholm/Desktop/tezt.png', '-dpng', '-r400')
@@ -1060,11 +1066,11 @@ fprintf('Year: %i\n', time_rob(first)*1000)
 fprintf('\n--------------- Delta T ------------------------------------\n')
 fprintf('\t   T \t   Delta T \t   Lower \t    Upper \n')
 format bank % two decimal points; 'currency' format
-display(Del_T_table);
+disp(Del_T_table);
 
 fprintf('\n--------------- Delta SMB [mm SLE/yr] ----------------------\n')
 fprintf('\t   T \t   Delta SMB \t   Lower \t    Upper \n')
-display(Del_SMB_table);
+disp(Del_SMB_table);
 format short % default
 
 Del_SMB_Gt = Del_SMB_table;
@@ -1074,12 +1080,19 @@ Del_SMB_Gt(:, 2:4) = Del_SMB_Gt(:, 2:4)/mm_SLE_pr_Gt;
 format bank
 fprintf('\n--------------- Delta SMB [Gt/yr] --------------------------\n')
 fprintf('\t   T \t   Delta SMB \t   Lower \t    Upper \n')
-display(Del_SMB_Gt);
+disp(Del_SMB_Gt);
 format short % default
 
 
+% Delta SMB in percent of average 2003 - 2011
+%  Average SMB 2003 - 2011 = -234 Gt/y (Barletta et al., 2013)
+BarlettaSMB = 234; % Gt/y
 
-
+format bank
+fprintf('\n--------------- Delta SMB in percent of 2003 - 2011 average \n')
+fprintf('\t   MLE \t   Lower \t      Upper \n')
+disp(Del_SMB_Gt(2, 2:4) / BarlettaSMB * 100);
+format short % default
 
 
 
