@@ -100,13 +100,13 @@ Convert from parameter values and warming value to simulation number in Robinson
 **Figures in the article**
 
 * Figure 1: `MassBalanceSketch.ipynb`
-![Figure 1](png/figure01.png)
+<img src="png/figure01.png" width="400">
 
 * Figure 2: `icesheetsSimulations.m`
-![Figure 2](png/figure02.png)
+<img src="png/figure02.png" width="400">
 
 * Figure 3a: `icesheetsSimulations.m`
-![Figure 3a](png/figure03a.png)
+<img src="png/figure03a.png" width="400">
 
 * Figure 3b: `icesheetsLongTerm.m`
 ![Figure 3b](png/figure03b.png)
