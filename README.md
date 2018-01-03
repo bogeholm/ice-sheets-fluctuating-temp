@@ -109,24 +109,24 @@ Convert from parameter values and warming value to simulation number in Robinson
 <img src="png/figure03a.png" width="400">
 
 * Figure 3b: `icesheetsLongTerm.m`
-![Figure 3b](png/figure03b.png)
+<img src="png/figure03b.png" width="400">
 
 * Figure 4: `icesheetsLongTerm.m`
-![Figure 4](png/figure04.png)
+<img src="png/figure04.png" width="400">
 
 **Figures in the supplement**
 
-* Figure S2: `icesheetsStepsize.m`
-![Figure S2](png/figureS01.png)
+* Figure S1: `icesheetsStepsize.m`
+<img src="png/figureS01.png" width="400">
 
-* Figure S3: `greenlandTemperature.m`
-![Figure S3](png/figureS02.png)
+* Figure S2: `greenlandTemperature.m`
+<img src="png/figureS02.png" width="400">
 
-* Figure S4: `icesheetsCrossterms.m`
-![Figure S4](png/figureS03.png)
+* Figure S3: `icesheetsCrossterms.m`
+<img src="png/figureS03.png" width="400">
+
+* Figure S4: `icesheetsLongTerm.m`
+<img src="png/figureS04.png" width="400">
 
 * Figure S5: `icesheetsLongTerm.m`
-![Figure S5](png/figureS04.png)
-
-* Figure S6: `icesheetsLongTerm.m`
-![Figure S6](png/figureS05.png)
+<img src="png/figureS05.png" width="400">
