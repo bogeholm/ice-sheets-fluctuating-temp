@@ -1,22 +1,11 @@
 # --------------------- gitignore by bogeholm, July 14th, 2014 -----------------
-# Updated November 2015
-#
-# Inspiration:
-# https://gist.github.com/octocat/9257657
-# https://programmers.stackexchange.com/questions/80962/
-# ...should-images-be-stored-in-a-git-repository
-#
-# YES: Images will be comitted and backed up!
+# Updated January 2018
 
 # -------------------- Robinson et al.'s data is not ours to share -------------
-# https://stackoverflow.com/questions/2545602/git-ignore-sub-folders
 robinsondata/
 
 # -------------------- MATLAB temporary files
 *.m~
-
-# -------------------- R specifif files ----------------------------------------
-*.Rhistory
 
 # -------------------- LaTeX files are re-generated from .tex and .bib ---------
 *.aux
@@ -35,7 +24,6 @@ robinsondata/
 *.toc
 *.top
 *.tui
-
 
 # -------------------- OS X generated files ------------------------------------
 .DS_Store
