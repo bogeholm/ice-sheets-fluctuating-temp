@@ -27,19 +27,19 @@ run('icesheetsSetup')
 % -------------------------------------------------------------------------
 
 
-% -------------------------------------------------------------------------
+%% -------------------------------------------------------------------------
 % Save?
 % pdf's are used in the article, png's in the README
-%save_pdf = true;
-%save_png = true;
-save_pdf = false;
-save_png = false;
+save_pdf = true;
+save_png = true;
+%save_pdf = false;
+%save_png = false;
 % -------------------------------------------------------------------------
 
 
 
 
-% ------------- Variance of AR(1) process ---------------------------------
+%% ------------- Variance of AR(1) process ---------------------------------
 %https://en.wikipedia.org/wiki/Autoregressive_model#...
 % Example:_An_AR.281.29_process
 %
@@ -885,11 +885,11 @@ end
 fprintf(' -------------- Delta T -------------- \n')
 fprintf('\t   T \t   Delta T \t   Lower \t    Upper \n')
 format bank % two decimal points; 'currency' format
-display(Del_T_table);
+disp(Del_T_table);
 fprintf('\n')
 fprintf(' -------------- Delta SMB ------------ \n')
 fprintf('\t   T \t   Delta SMB \t   Lower \t    Upper \n')
-display(Del_SMB_table);
+disp(Del_SMB_table);
 format short % default
 
 %% Plot Delta SMB and Delta T with credible intervals
@@ -1026,27 +1026,24 @@ yl = ylabel('$\Delta$SMB [mm SLE yr$^{-1}$]'); textset(yl)
 % pdf's
 if save_pdf == true
     disp('Saving pdfs...')
-    export_fig(fig002, [pdfpath, '2016gl070016-p03.pdf'])
+    export_fig(fig002, [pdfpath, 'figure03b.pdf'])
     % "export_fig currently supports transparent patches/areas only 
     % in PNG output.
-    print(fig009, [pdfpath, '2016gl070016-p04.pdf'], ...
-        '-dpdf', '-r400')
-    export_fig(fig112, [pdfpath, 'RobinsonTemperature.pdf'])
-    export_fig(fig118, [pdfpath, 'VolumeHistogram.pdf'])
-    export_fig(fig119, [pdfpath, 'VolumeHistogramMaxtemp.pdf'])
-    export_fig(fig911, [pdfpath, 'RobinsonVolumeTime.pdf'])
+    print(fig009, [pdfpath, 'figure04'], '-dpdf', '-r400')
+    export_fig(fig118, [pdfpath, 'figureS04.pdf'])
+    export_fig(fig119, [pdfpath, 'figureS05.pdf'])
 end
 
 % png's for the README
 if save_png == true
     disp('Saving pngs...')
-    print(fig002, [pngpath, '2016gl070016-p03.png'], '-dpng', '-r400')
-    print(fig002, [pngpath, '2016gl070016-p03.eps'], '-depsc', '-r400')
-    print(fig002, [pngpath, 'figure-two-right-panel.jpg'], '-djpeg', '-r600')
-    %export_fig(fig002, [pngpath, '2016gl070016-p03.png'])
-    export_fig(fig009, [pngpath, '2016gl070016-p04.png'])
-    export_fig(fig118, [pngpath, 'VolumeHistogram.png'])
-    export_fig(fig119, [pngpath, 'VolumeHistogramMaxtemp.png'])
+    print(fig002, [pngpath, 'figure03b.png'], '-dpng', '-r400')
+    print(fig002, [pngpath, 'figure03b.eps'], '-depsc', '-r400')
+    print(fig002, [pngpath, 'figure03b.jpg'], '-djpeg', '-r600')
+
+    export_fig(fig009, [pngpath, 'figure04.png'])
+    export_fig(fig118, [pngpath, 'figureS04.png'])
+    export_fig(fig119, [pngpath, 'figureS05.png'])
 end
 
 

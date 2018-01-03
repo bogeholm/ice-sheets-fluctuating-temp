@@ -35,10 +35,10 @@ run('oerlemansParam')
 % -------------------------------------------------------------------------
 % Save figures?
 % pdf's are used in the article, png's in the README
-%save_pdf = true;
-%save_png = true;
-save_pdf = false;
-save_png = false;
+save_pdf = true;
+save_png = true;
+%save_pdf = false;
+%save_png = false;
 % -------------------------------------------------------------------------
 
 
@@ -452,12 +452,12 @@ yl = ylabel('Volume [m. SLE]'); textset(yl)
 % ------------------------------------------------------------------------
 if save_pdf
     disp('Saving pdfs...')
-    export_fig(fig004, [pdfpath, 'StepSize.pdf']);
+    export_fig(fig004, [pdfpath, 'figureS01.pdf']);
 end
 % ------------------------------------------------------------------------
 if save_png
     disp('Saving pngs...')
-    export_fig(fig004, [pngpath, 'StepSize.png']);
+    export_fig(fig004, [pngpath, 'figureS01.png']);
 end
 % ------------------------------------------------------------------------
 

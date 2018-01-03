@@ -41,11 +41,6 @@ save_png = true;
 % -------------------------------------------------------------------------
 
 
-% -------------------------------------------------------------------------
-% Save data?
-%savedata = true;
-savedata = false;
-% -------------------------------------------------------------------------
 
 % -------------------------------------------------------------------------
 % 'test' is quite quick run (~20 seconds on dual core i7), 
@@ -58,15 +53,6 @@ thisrun = 'production';
 % -------------------------------------------------------------------------
 % Turn off warnings for ds2nfu
 warning('off', 'MATLAB:nargchk:deprecated')
-% -------------------------------------------------------------------------
-
-
-
-
-% ------------- Verbosity ---------------------------------------------
-if savedata == true
-    disp('*--------------> Saving data <-----------------*')
-end
 % -------------------------------------------------------------------------
 
 
@@ -236,6 +222,8 @@ for idT = 1:n_temps
         % Store meansAR
         meansAR(idT) = mean(m);
 end
+
+
 
 
 %% Repeat the above process for temps_show
@@ -478,7 +466,7 @@ s1 = scatter(temps_show, meanV_show, 'k+');
 %    'markeredgecolor', 'k', 'markerfacecolor', 'none', 'linewidth', 1);
 
 % Now, prepare to do the magic stuff
-[C3, d2fcont] = contour(T2m, V2m, fm+d2f*arvar/2, ...
+[~, d2fcont] = contour(T2m, V2m, fm+d2f*arvar/2, ...
     [0 0], 'LineColor', yellow, 'LineWidth', 2);
 
 % Also, scatter the fluctuating temperatures on the color map
@@ -487,7 +475,7 @@ sc = scatter(temps_show, meansAR_show, 'ko');
 
 
 % Contour of steady state
-[C1, odecont] = contour(T2m, V2m, fm,[0 0],'k');
+[~, odecont] = contour(T2m, V2m, fm,[0 0],'k');
 
 % Contour folded with temperature fluctuation
 %folding = normpdf(-14:dT:14, 0, sqrt(arvar)); 
@@ -840,30 +828,26 @@ text(orgplot, 2.7, -6.8, ...
     'BackgroundColor', 'w');
 
 %% Save figures?
-% figure names correspond to AGU figure naming convention
 if save_pdf
     fprintf('Saving pdfs...\n');
     % pdf files for the article
-    export_fig(fig010, [pdfpath, '2016gl070016-p02.pdf']);
-    %print(fig011, [figpath, 'Sim+Approx-2016.eps'], '-depsc', '-r400')
-    print(fig011, [pdfpath, '2016gl070016-p01.pdf'], '-dpdf', '-r400')
+    export_fig(fig010, [pdfpath, 'figure03a.pdf']);
+    print(fig011, [pdfpath, 'figure02.pdf'], '-dpdf', '-r400')
 end
 
 % png files used to generate README.md
 if save_png
     fprintf('Saving pngs...\n');
-    export_fig(fig010, [pngpath, '2016gl070016-p02.png']);
-    % export_fig does not work with this figure
-    print(fig011, [pngpath, '2016gl070016-p01.png'], '-dpng', '-r200')
-    print(fig010, [pngpath, 'figure-two-left-panel.jpg'], '-djpeg', '-r600')
-    export_fig(fig010, [pngpath, '2016gl070016-p02.png']);
+    print(fig010, [pngpath, 'figure03a.jpg'], '-djpeg', '-r600')
+    print(fig010, [pngpath, 'figure03a.png'], '-dpng', '-r600')
+    print(fig011, [pngpath, 'figure02.png'], '-dpng', '-r200')
 end
 
 display(temps)
-display(meanV)
+disp(meanV)
 
 display(temps_show)
-display(meansAR_show)
+disp(meansAR_show)
 
 % -------------------------------------------------------------------------
 fprintf('Done.\n')

@@ -36,43 +36,32 @@ atmospheric climate model MAR*, The Cryosphere, 7, 469–489, doi:
 **File descriptions**
 
 * `data/ar1results.mat`
-Contains AR(1)-coefficient and variance from fitting an AR(1)-model
-to annual Greenland reanalysis data.
-Created by `greenlandTemperature.m`.
+Contains AR(1)-coefficient and variance from fitting an AR(1)-model to annual Greenland reanalysis data. Created by `greenlandTemperature.m`.
 
 
 * `data/GreenlandTemperatureData.txt`
-Contains monthly reanalysis data from climexp.knmi.nl (see the file for a
-description).
+Contains monthly reanalysis data from climexp.knmi.nl (see the file for a description).
 
-* `greenlandTemperature.m`: Loads Greenland temperature data and fits an
-AR(1) model. Calculates simple diagnostics on the model.
-This is done after loading `GreenlandTemperatureData.txt`.
-Saves results in `data/ar1results.mat`.
-Makes Figure S3 in the supplement.
+* `greenlandTemperature.m`: Loads Greenland temperature data and fits an AR(1) model. Calculates simple diagnostics on the model. This is done after loading `GreenlandTemperatureData.txt`. Saves results in `data/ar1results.mat`.
+
 
 * `icesheetsCrossterms.m`
-Evaluates the contribution from the cross and volume variance terms
-in equation (3) in the article and makes Figure S4.
+Evaluates the contribution from the cross and volume variance terms in equation (3) in the article.
 
 
-* `icesheetsRobinson.m`
+* `icesheetsLongTerm.m`
 Applies effect of fluctuating temperature to Robinson et al.'s results.
-Makes Figures 3 and 4 in the article and Figures S5 and S6 in the supplement.
-
 
 * `icesheetsSetup.m`
 Common script setup. Contains path and font size variables etc.
 
 
 * `icesheetsSimulations.m`
-Integrates the Oerlemans (2003) model with  fluctuating temperature
-and makes Figures 1 and 2 in the article.
+Integrates the Oerlemans (2003) model with  fluctuating temperature.
 
 
 * `icesheetsStepsize.m`
-Evaluates the consequences of the chosen integration time step size for
-the Oerlemans model and makes Figure S2.
+Evaluates the consequences of the chosen integration time step size for the Oerlemans model.
 
 
 * `iceTotal.m`
@@ -80,13 +69,11 @@ Utility function to ease the use of `iceVolume.m`.
 
 
 * `iceVolume.m`
-Calculates the ice sheet volume given the radii of the 1) ice sheet
-and 2) the continent upon which the ice sheet rests.
+Calculates the ice sheet volume given the radii of the 1) ice sheet and 2) the continent upon which the ice sheet rests.
 
 
 * `MassBalanceSketch.ipynb`
-Sketches the mass balance as a function of altitude for the Oerlemans
-(2003) model and makes Figure S1.
+Sketches the mass balance as a function of altitude for the Oerlemans (2003) model. Juyter notebook.
 
 
 * `oerlemansModel.m`
@@ -98,8 +85,7 @@ Contains parameters for the simulations.
 
 
 * `simnumber.m`
-Convert from parameter values and warming value to simulation number
-in Robinson et al.'s (2012) data.
+Convert from parameter values and warming value to simulation number in Robinson et al.'s (2012) data.
 
 **Workflow**
 
@@ -113,34 +99,34 @@ in Robinson et al.'s (2012) data.
 
 **Figures in the article**
 
-* Figure 1: `icesheetsSimulations.m`
-![Figure 1](png/2016gl070016-p01.png)
+* Figure 1: `MassBalanceSketch.ipynb`
+![Figure 1](png/figure01.png)
 
 * Figure 2: `icesheetsSimulations.m`
-![Figure 2](png/2016gl070016-p02.png)
+![Figure 2](png/figure02.png)
 
-* Figure 3: `icesheetsRobinson.m`
-![Figure 3](png/2016gl070016-p03.png)
+* Figure 3a: `icesheetsSimulations.m`
+![Figure 3a](png/figure03a.png)
 
-* Figure 4: `icesheetsRobinson.m`
-![Figure 4](png/2016gl070016-p04.png)
+* Figure 3b: `icesheetsLongTerm.m`
+![Figure 3b](png/figure03b.png)
+
+* Figure 4: `icesheetsLongTerm.m`
+![Figure 4](png/figure04.png)
 
 **Figures in the supplement**
 
-* Figure S1: `MassBalanceSketch.ipynb`
-![Figure S1](png/oerlemansMassBalance.png)
-
 * Figure S2: `icesheetsStepsize.m`
-![Figure S2](png/StepSize.png)
+![Figure S2](png/figureS01.png)
 
 * Figure S3: `greenlandTemperature.m`
-![Figure S3](png/GreenlandTemp.png)
+![Figure S3](png/figureS02.png)
 
 * Figure S4: `icesheetsCrossterms.m`
-![Figure S4](png/VarianceFunctionTime.png)
+![Figure S4](png/figureS03.png)
 
-* Figure S5: `icesheetsRobinson.m`
-![Figure S5](png/VolumeHistogram.png)
+* Figure S5: `icesheetsLongTerm.m`
+![Figure S5](png/figureS04.png)
 
-* Figure S6: `icesheetsRobinson.m`
-![Figure S6](png/VolumeHistogramMaxtemp.png)
+* Figure S6: `icesheetsLongTerm.m`
+![Figure S6](png/figureS05.png)

@@ -43,8 +43,8 @@ save_png = true;
 
 
 % -------------------------------------------------------------------------
-%savedata = true;
-savedata = false;
+savedata = true;
+%savedata = false;
 % -------------------------------------------------------------------------
 hlred_rgb = [174 0 20];
 hlred = hlred_rgb / 255;
@@ -94,30 +94,6 @@ xlim([uyear(1) uyear(end)])
 
 
 
-%% ACF of temp
-%  see https://se.mathworks.com/help/econ/autocorr.html
-fig005 = figure(005); figset(fig005)
-autocorr(temp)
-
-
-
-
-%% Estimate autocorrelation of Greenland temperature
-nlags = floor(numel(avgtemp)/4);
-[acf, lags, bounds] = autocorr(avgtemp, nlags);
-
-
-% Figure: ACF of temperature
-fig3 = figure(3); hold on; box on; figset(fig3)
-plot(lags, acf)
-oe = repmat(exp(-1), nlags+1, 1);
-%poe = plot(lags, oe);
-
-
-% Find the first temp below 1/e
-cct = find(acf < exp(-1), 1);
-line([cct cct], ylim);
-
 
 %% Fit AR(1) process to temperature
 % Specify AR part of the model
@@ -140,25 +116,6 @@ if savedata == true
     save(ar1filename, '-struct', 'ar1');
 end
 
-%% Fit ARMA(1, 1) process
-armamdl = arima(1, 0, 1);
-% Estimate model. len(v) must be =(<=?) len(t) - 1
-armaest = estimate(armamdl, avgtemp, 'Display', 'off');
-% Get the parameters. Note the beautiful syntax of MATLAB
-%estar1 = est.AR{1};
-%estvar = est.Variance;
-
-% Save the varince and ar1-parameter
-%ar1 = struct;
-%ar1.estar1 = estar1;
-%ar1.estvar = estvar;
-
-% Save the results
-%if savedata == true
-%    % AR parameters
-%    save(ar1filename, '-struct', 'ar1');
-%end
-
 
 %%
 
@@ -173,7 +130,7 @@ for idx = 2:numel(avgtemp)
 end
 
 % Figure: observed and simulated temperature
-fig004 = figure(004); hold on; box on; figset(fig004)
+fig002 = figure(002); hold on; box on; figset(fig002)
 pobs = plot(uyear, avgtemp, 'color', grey, 'linewidth', 2);
 psim1 = plot(uyear, tsim(:, 1), 'color', blue);
 % Pretty plot
@@ -198,56 +155,18 @@ arvar_func = @(a1, s) s^2 / (1 - a1^2);
 arvar = arvar_func(estar1, sqrt(estvar));
 
 
-% Simulate artificial temperatures
-nsims = 20;
-lensim = 2500;
-burnin = 500; % Let the process reach steady state
-numericalvar = zeros(nsims, 1);
 
-for simid = 1:nsims
-    tsim_check=zeros(lensim, 1);
-    eta = randn(lensim);
-    for idx = 2:lensim
-        tsim_check(idx) = estar1*tsim_check(idx-1) + sqrt(estvar)*eta(idx);
-    end
-    numericalvar(simid) = var(tsim_check(burnin:end));
-end
-
-mvar = mean(numericalvar);
-
-
-%{
-% Plot variance of simulated temperatures
-xax = 1:1:nsims;
-one = ones(size(xax));
-
-% Figure: comparison of variances
-fig5 = figure(5); hold on; box on; figset(fig5)
-
-pl1 = plot(xax, one*arvar, 'color', blue, 'linewidth', 1.5);
-pl2 = plot(xax, one*mvar, 'color', green, 'linewidth', 1.5);
-pl3 = scatter(xax, numericalvar, 'markerfacecolor', red);
-
-% Pretty plot
-legstrs = {'Theory', 'Mean Variance of Simulations', ...
-    'Variance of Simulations'};
-l1 = legend([pl1, pl2, pl3], legstrs); legset(l1)
-tt = title('Variance of Temperature Simulations'); textset(tt)
-xl = xlabel('Simulation Number'); textset(xl)
-yl = ylabel('Variance of $T$'); textset(yl)
-ylim([1 2])
-%}
 
 % Save figures?
 if save_pdf
     fprintf('Saving pdfs...\n');
-    export_fig(fig001, [pdfpath, 'GreenlandTemp.pdf'])
+    export_fig(fig001, [pdfpath, 'figureS02.pdf'])
 end
 
 % Save figures?
 if save_png
     fprintf('Saving pngs...\n');
-    export_fig(fig001, [pngpath, 'GreenlandTemp.png'])
+    export_fig(fig001, [pngpath, 'figureS02.png'])
 end
 
 
@@ -271,9 +190,7 @@ fprintf('\n')
 fprintf('Theoretical variance of AR(1) model:\n')
 fprintf('Var(theory) = %.4f\n', arvar);
 
-fprintf('\n\n----------- Mean variance of %i {T_t} --------------\n', nsims)
-fprintf('            series simulated with 1)\n')
-fprintf('Var({T_t}): %.4f\n', mean(numericalvar));
+
 
 
 % -------------------------------------------------------------------------
